@@ -53,3 +53,5 @@ function calculateBills() {
     }
     document.getElementById('resultContainer').innerText = resultText;
 }
+
+/*     ʕ ᵔᴥᵔ ʔ     */
