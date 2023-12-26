@@ -1,6 +1,6 @@
 function atm(sum) {
-    var denominations = [1000, 500, 200, 100, 50, 20, 10, 5, 2, 1];
-    var atmState = {
+    const denominations = [1000, 500, 200, 100, 50, 20, 10, 5, 2, 1];
+    let atmState = {
         1000: 10,
         500: 10,
         200: 10,
@@ -12,20 +12,23 @@ function atm(sum) {
         2: 10,
         1: 10
     };
-    var result = {};
-    var totalBills = 0;
+    let result = {};
+    let totalBills = 0;
 
-    for (var i = 0; i < denominations.length; i++) {
-        var denomination = denominations[i];
+    for (let i = 0; i < denominations.length; i++) {
+        let denomination = denominations[i];
         if (sum >= denomination && atmState[denomination] > 0) {
-            var billsNeeded = Math.floor(sum / denomination);
-            var billsToGive = Math.min(billsNeeded, atmState[denomination], 40 - totalBills);
+            let billsNeeded = Math.floor(sum / denomination);
+            let billsToGive = Math.min(billsNeeded, atmState[denomination], 40 - totalBills);
 
             if (billsToGive > 0) {
                 result[denomination] = billsToGive;
                 sum -= billsToGive * denomination;
                 totalBills += billsToGive;
             }
+        }
+        if (totalBills > 40) {
+            return 'Банкомат не может выдать запрошенную сумму';
         }
     }
 
@@ -37,11 +40,16 @@ function atm(sum) {
 }
 
 function calculateBills() {
-    var sum = document.getElementById('sum').value;
-    var result = atm(sum);
-    var resultText = '';
-    for (var denomination in result) {
-        resultText += 'Купюр номиналом ' + denomination + ' грн: ' + result[denomination] + '\n';
+    let sum = document.getElementById('sum').value;
+    let result = atm(sum);
+    let resultText = '';
+    if (typeof result === 'string') {
+        resultText = result;
+    } else {
+        resultText += 'Терминал выдаст:\n';
+        for (let denomination in result) {
+            resultText += 'Купюр номиналом ' + denomination + ' грн: ' + result[denomination] + 'шт\n';
+        }
     }
     document.getElementById('resultContainer').innerText = resultText;
 }
